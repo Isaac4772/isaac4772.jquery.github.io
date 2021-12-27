@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JQ Tab Example</title>
+    <style>
+      /* * {
+        margin: 0;
+        padding: 0;
+      } */
+
+      ul.link-wapper {
+        list-style-type: none;
+        margin: 20px;
+        padding: 0;
+        text-align: center;
+      }
+
+      ul.link-wapper li {
+        display: inline-block;
+        padding: 10px;
+      }
+
+      ul.link-wapper li a {
+        text-decoration: none;
+        color: black;
+        padding: 10px;
+      }
+
+      ul.link-wapper li a.active {
+        color: #0037ff;
+        border-bottom: 1px solid red;
+      }
+
+      div.content {
+        max-width: 800px;
+        padding: 20px 50px;
+        margin: 0 auto 10px;
+        display: none;
+      }
+
+      div#shop {
+        background-color: #d2d2d2;
+        max-width: 75%;
+      }
+
+      div.shop {
+        display: grid;
+        grid-template-columns: 170px 170px 170px 170px 170px;
+        grid-gap: 50px 30px;
+        text-align: center;
+        justify-content: center;
+      }
+
+      div.item {
+        background-color: white;
+      }
+
+      div.item img {
+        width: 140px;
+        height: 160px;
+        object-fit: contain;
+        transition: 0.3s;
+        margin-bottom: 50px;
+      }
+
+      div.item p {
+        font-size: 15px;
+        margin-bottom: 30px;
+      }
+
+      button.atc {
+        width: 100%;
+        padding: 10px 0;
+        border: none;
+        transition: 0.3s;
+      }
+
+      button.atc:hover {
+        background-color: blanchedalmond;
+        cursor: pointer;
+      }
+
+      div#contact {
+        background-image: url(https://images.pexels.com/photos/1416530/pexels-photo-1416530.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+        background-position: center;
+        background-repeat: no-repeat;
+        max-width: 75%;
+        height: 470px;
+      }
+
+      div#contact > p {
+        color: white;
+        font-size: 40px;
+        text-align: center;
+        padding-top: 100px;
+        font-family: Montserrat;
+      }
+
+      div.contact {
+        margin-top: 100px;
+        justify-content: center;
+        text-align: center;
+        display: grid;
+        grid-template-columns: 350px 350px 350px;
+        column-gap: 30px;
+      }
+
+      div.contact div {
+        background-color: white;
+        height: 150px;
+      }
+
+      div.contact p {
+        font-size: 20px;
+        margin-top: 25px;
+      }
+
+      div.contact img {
+        width: 50px;
+        height: 50px;
+        padding-top: 5px;
+      }
+
+      div.contact p.title {
+        color: white;
+        font-size: 20px;
+        font-family: Montserrat;
+        margin-bottom: 10px;
+      }
+
+      .map {
+        background-color: #d2d2d2;
+        margin-top: 310px;
+        height: 490px;
+        width: 100%;
+      }
+
+      .map iframe {
+        float: left;
+        padding: 20px 10px;
+      }
+
+      .clear {
+        clear: both;
+      }
+
+      .map > p {
+        font-size: 30px;
+        text-align: center;
+        font-family: Montserrat;
+        padding-top: 20px;
+      }
+
+      .form {
+        margin-top: 10px;
+        float: right;
+        margin-right: 15%;
+      }
+      .form input[type="text"],
+      input[type="email"] {
+        padding: 10px;
+        margin-top: 30px;
+        width: 100%;
+        background-color: white;
+        border: hidden;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      textarea {
+        width: 110%;
+        margin-top: 30px;
+        height: 200px;
+        border: hidden;
+        transition: 0.3s;
+      }
+
+      form input[type="text"]:focus,
+      input[type="email"]:focus {
+        padding: 12px;
+        outline: none;
+      }
+
+      textarea:focus {
+        outline: none;
+        padding: 2px;
+      }
+
+      textarea[placeholder] {
+        font-size: 17px;
+      }
+
+      form input[type="submit"] {
+        padding: 7px 10px;
+        background-color: #16191c;
+        color: white;
+        border: hidden;
+        transition: 0.3s;
+      }
+
+      form input[type="submit"]:hover {
+        padding: 8px 11px;
+        cursor: pointer;
+      }
+
+      form input[type="submit"]:active {
+        padding: 9px 12px;
+        background-color: #0267eb;
+      }
+
+      th,
+      td {
+        border: 1px solid #dddddd;
+      }
+    </style>
+
+    <script src="sweetalert2.all.min.js"></script>
+
+    <script type="text/javascript" src="jquery.js"></script>
+
+    <script type="text/javascript">
+      // Your Script Here!
+      // $(document).ready(function (argument) {
+
+      $(function () {
+        $(".content").first().slideDown();
+
+        $("ul.link-wapper li a").on("click", function (event) {
+          var current_tab = $(this);
+          $("ul.link-wapper li a").removeClass("active");
+          current_tab.addClass("active");
+
+          $(".content").slideUp();
+          current_tab_href = current_tab.attr("href"); // #home
+          $(current_tab_href).slideDown(); // $('#home')
+
+          event.preventDefault();
+        });
+
+        //local Storage
+        $(".atc").on("click", function () {
+          let id = $(this).data("id");
+          let name = $(this).data("name");
+          let price = $(this).data("price");
+
+          let item = {
+            id: id,
+            name: name,
+            price: price,
+            qty: 1,
+          };
+
+          let cart = localStorage.getItem("cart");
+          let myArr = [];
+          if (cart != null) {
+            myArr = JSON.parse(cart);
+          }
+
+          let status = -1;
+          for (same of myArr) {
+            if (same.id == item.id) {
+              same.qty++;
+              status = 0;
+              break;
+            }
+          }
+
+          if (status == -1) myArr.push(item);
+
+          //JS Object => JSON String
+          let itemString = JSON.stringify(myArr);
+          console.log(itemString);
+
+          localStorage.setItem("cart", itemString);
+          getdata();
+
+          quantity = localStorage.getItem("quantity");
+          something = JSON.parse(quantity);
+
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Added to cart",
+            showConfirmButton: false,
+            timer: 500,
+          });
+        });
+
+        //get data form local stroage
+        function getdata() {
+          let cart = localStorage.getItem("cart");
+          let total = 0;
+          if (cart != null) {
+            let myArr = JSON.parse(cart);
+            let row = "";
+            let i = 0;
+            for ([index, item] of myArr.entries()) {
+              total += item.qty * item.price;
+              row += `<tr>
+                    <td>
+                      <button class="remove" data-id="${index}">Remove</button>
+                      ${++i}
+                    </td>
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                    <td>
+                      <input type="number" value="${
+                        item.qty
+                      }" class="updateqty" data-id="${index}"
+                    </td>
+                    <td>${item.qty * item.price}</td>
+                    </tr>`;
+            }
+            row += `<tr>
+                      <td colspan="4">Total Amount</td>
+                      <td>${total}</td>
+                    </tr>`;
+            $("tbody").html(row);
+          } else {
+            $("tbody").html("<tr><td>The cart is empty!</td></tr>");
+          }
+        }
+        getdata();
+
+        //Remove
+        $("tbody").on("click", ".remove", function () {
+          let index = $(this).data("id");
+          //console.log(index)
+          let cart = localStorage.getItem("cart");
+          let myArr = JSON.parse(cart);
+          //Delete one row
+          myArr.splice(index, 1);
+
+          //JS Object => JSON String
+          let myArrString = JSON.stringify(myArr);
+          //console.log(myArrString)
+          localStorage.setItem("cart", myArrString);
+          getdata();
+        });
+
+        //Increase - Decrease
+        $("body").on("change", ".updateqty", function () {
+          let index = $(this).data("id");
+          // console.log(index)
+          let qty = $(this).val();
+          let cart = localStorage.getItem("cart");
+          let myArr = JSON.parse(cart);
+          myArr[index].qty = qty;
+          //JS Object => JSON String
+          let myArrString = JSON.stringify(myArr);
+          //console.log(myArrString)
+          localStorage.setItem("cart", myArrString);
+        });
+
+        $(".checkout").on("click", function () {
+          localStorage.removeItem("cart");
+          getdata();
+          Swal.fire("Order succeeded", "Checkout is complete", "success");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="tab">
+      <ul class="link-wapper">
+        <li>
+          <a href="#home" class="active">Home</a>
+        </li>
+
+        <li>
+          <a href="#about">About</a>
+        </li>
+
+        <li>
+          <a href="#contact">Contact</a>
+        </li>
+
+        <li>
+          <a href="#shop">Shop</a>
+        </li>
+
+        <li>
+          <a href="#cart">Cart</a>
+        </li>
+      </ul>
+
+      <div class="content" id="home">
+        <h3>Home Section</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis
+          laborum sequi earum eaque pariatur atque voluptatibus maxime
+          exercitationem a ipsam consequatur, unde quidem quia deserunt
+          veritatis veniam dolorum, possimus quaerat!
+        </p>
+      </div>
+
+      <div class="content" id="about">
+        <h3>About Section</h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint repellat
+          consequatur quasi quidem vitae aliquam dignissimos veniam porro quos.
+          Cum maxime ipsa dolor eligendi, iure ea doloribus molestias beatae
+          vitae?
+        </p>
+      </div>
+
+      <div class="content" id="contact">
+        <p>We'd Love To Hear From You</p>
+        <div class="contact">
+          <p class="title">Email</p>
+          <p class="title">Phone</p>
+          <p class="title">Address</p>
+
+          <div class="email">
+            <img
+              src="https://cdn-icons.flaticon.com/png/512/3178/premium/3178158.png?token=exp=1640504088~hmac=8ea5e8da71bae07e0a43382e8ca50898"
+              alt=""
+            />
+            <p>Office : aungpying942@gmail.com</p>
+            <p>Office : coocheman0@gmail.com</p>
+            <p>Office : izaccnewton9@gmail.com</p>
+            <p>Customer Support : iamawesome3@gmail.com</p>
+            <p>Customer Support : ericcruises29@gmail.com</p>
+          </div>
+
+          <div class="phone">
+            <img
+              src="https://cdn-icons.flaticon.com/png/512/450/premium/450016.png?token=exp=1640504170~hmac=2a6f3e993015391c1ac49a26130f1460"
+              alt=""
+            />
+            <p>Yangon : +959 774511562</p>
+            <p>Manadaly: +959 774511563</p>
+            <p>Office: +959 774511564</p>
+            <p>Customer Support: +959 774511565</p>
+            <p>Customer Support: +959 774511566</p>
+          </div>
+
+          <div class="Address">
+            <img
+              src="https://cdn-icons.flaticon.com/png/512/3059/premium/3059446.png?token=exp=1640504226~hmac=3bbc8ddb0732526666c114fb73165f1c"
+              alt=""
+            />
+            <p>821 Thanthumar Rd, Yangon 11091</p>
+            <p>
+              78th street,78th street, Yangon-Mandalay Kar Lam Bhay Near Myetnar
+              Pheyar ,Pyigyi Tagon Tsp, Mandalay.
+            </p>
+            <p>No.2390, Padonmar Street, Shwekyaroin Qtr, 15011</p>
+          </div>
+        </div>
+
+        <div class="break"></div>
+
+        <div class="map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1909.268902379972!2d96.19198931648548!3d16.849270110937972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1933763f24a25%3A0xf6b0e96295e476c5!2sVVIP%20Liquor%20Store!5e0!3m2!1sen!2smm!4v1630143296194!5m2!1sen!2smm"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+          ></iframe>
+          <p>Message Us</p>
+          <form action="" method="GET" class="form">
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+            /><br />
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+            /><br />
+            <textarea name="message" placeholder="Enter your message"></textarea
+            ><br />
+            <input type="submit" value="submit" />
+          </form>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+
+      <div class="content" id="shop">
+        <h3>Shop Section</h3>
+
+        <div class="shop">
+          <div class="item">
+            <img src="cocacola.jfif" alt="" width="100px" />
+            <p>Item 1</p>
+            <strong>500ks</strong><br />
+            <button
+              class="atc"
+              data-id="1"
+              data-name="Item One"
+              data-price="500"
+            >
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="item">
+            <img src="cocacola.jfif" alt="" width="100px" />
+            <p>Item 2</p>
+            <strong>600ks</strong><br />
+            <button
+              class="atc"
+              data-id="2"
+              data-name="Item Two"
+              data-price="600"
+            >
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="item">
+            <img src="cocacola.jfif" alt="" width="100px" />
+            <p>Item 3</p>
+            <strong>800ks</strong><br />
+            <button
+              class="atc"
+              data-id="3"
+              data-name="Item Three"
+              data-price="800"
+            >
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="item">
+            <img src="cocacola.jfif" alt="" width="100px" />
+            <p>Item 4</p>
+            <strong>800ks</strong><br />
+            <button
+              class="atc"
+              data-id="4"
+              data-name="Item Four"
+              data-price="800"
+            >
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="item">
+            <img src="cocacola.jfif" alt="" width="100px" />
+            <p>Item 5</p>
+            <strong>800ks</strong><br />
+            <button
+              class="atc"
+              data-id="5"
+              data-name="Item Five"
+              data-price="800"
+            >
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="item">
+            <img src="cocacola.jfif" alt="" width="100px" />
+            <p>Item 6</p>
+            <strong>800ks</strong><br />
+            <button
+              class="atc"
+              data-id="6"
+              data-name="Item Six"
+              data-price="800"
+            >
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="item">
+            <img src="cocacola.jfif" alt="" width="100px" />
+            <p>Item 7</p>
+            <strong>800ks</strong><br />
+            <button
+              class="atc"
+              data-id="7"
+              data-name="Item Seven"
+              data-price="800"
+            >
+              Add To Cart
+            </button>
+          </div>
+
+          <div class="item">
+            <img src="cocacola.jfif" alt="" width="100px" />
+            <p>Item 8</p>
+            <strong>800ks</strong><br />
+            <button
+              class="atc"
+              data-id="8"
+              data-name="Item Eight"
+              data-price="800"
+            >
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content" id="cart">
+        <h3>Cart Section</h3>
+        <div class="mycart">
+          <table
+            cellspacing="0"
+            cellpadding="10"
+            width="100%"
+            style="margin-bottom: 10px"
+          >
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+
+            <tbody></tbody>
+          </table>
+
+          <button class="checkout">Checkout</button>
+          <span class="noti"></span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
