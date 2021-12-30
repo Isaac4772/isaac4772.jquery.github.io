@@ -214,6 +214,28 @@
       td {
         border: 1px solid #dddddd;
       }
+
+      span.show_qty {
+        position: relative;
+        bottom: 10px;
+        right: 10px;
+        padding: 0px 4px;
+        font-size: 13px;
+        background-color: rgb(23, 193, 216);
+        border-radius: 25px;
+        color: white;
+      }
+
+      button.remove {
+        border: none;
+        background: none;
+        position: relative;
+        top: 2px;
+      }
+
+      button.remove:hover {
+        cursor: pointer;
+      }
     </style>
 
     <script src="sweetalert2.all.min.js"></script>
@@ -298,11 +320,12 @@
             let row = "";
             let total = 0;
             let i = 0;
+            console.log(myArr);
             for ([index, item] of myArr.entries()) {
               total += item.qty * item.price;
               row += `<tr>
                             <td>
-                                <button class="remove" data-id="${index}">Remove</button> 
+                                <button class="remove" data-id="${index}"><img src="delete-button.png"></button> 
                                 ${++i}
                             </td>
                             <td>${item.name}</td>
@@ -327,6 +350,7 @@
               `<tr><td colspan="5">Your Cart is empty!</td></tr>`
             );
           }
+          show_qty();
         }
         getdata();
 
@@ -367,6 +391,23 @@
           Swal.fire("Order succeeded", "Checkout is complete", "success");
         });
       });
+
+      function show_qty() {
+        let cart = localStorage.getItem("cart");
+        let for_qty = JSON.parse(cart);
+        let number_of_qty = 0;
+        if (for_qty != null) {
+          for (item of for_qty) {
+            //console.log(item.qty);
+            number_of_qty += parseInt(item.qty);
+          }
+        } else {
+          number_of_qty = 0;
+        }
+
+        $(".show_qty").html(number_of_qty);
+        //console.log(number_of_qty)
+      }
     </script>
   </head>
   <body>
@@ -390,6 +431,7 @@
 
         <li>
           <a href="#cart">Cart</a>
+          <span class="show_qty"></span>
         </li>
       </ul>
 
